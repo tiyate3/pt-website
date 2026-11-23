@@ -2,6 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import PageHead from '../components/PageHead.astro';
 import ImageSlot from '../components/ImageSlot.astro';
+import ReviewCard from '../components/ReviewCard.astro';
+import { SHOWN_REVIEWS } from '../reviews';
 import { withBase } from '../utils/paths';
 
 /*
@@ -49,28 +51,13 @@ const transformations: {
   },
 ];
 
-const quotes = [
-  {
-    name: 'Client name',
-    service: 'Rehabilitation',
-    quote: 'Curabitur pretium tincidunt lacus, nulla gravida orci a odio.',
-  },
-  {
-    name: 'Client name',
-    service: 'Calisthenics',
-    quote: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  },
-  {
-    name: 'Client name',
-    service: 'Strength & Conditioning',
-    quote: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-  },
-];
+// Three Google reviews, from the shared list in src/reviews.ts (also on the home page)
+const quotes = SHOWN_REVIEWS.slice(0, 3);
 ---
 
 <Layout
   tab="Results"
-  description="Testimonials and before-and-after transformations from clients I've trained in central London."
+  description="Testimonials and before-and-after transformations from clients I've trained in Central London."
 >
   <PageHead
     title="Client results"
@@ -108,7 +95,7 @@ const quotes = [
     </div>
   </section>
 
-  <!-- Short Testimonials: the page's only black band, three quotes in a row -->
+  <!-- Short Testimonials: the page's only black band, three Google reviews in a row -->
   <section class="section on-dark quotes-section">
     <div class="container">
       <div class="section-head" data-reveal>
@@ -118,10 +105,7 @@ const quotes = [
         {
           quotes.map((q, i) => (
             <li data-reveal style={`--d: ${i}`}>
-              <blockquote>“{q.quote}”</blockquote>
-              <p>
-                <strong>{q.name}</strong>
-              </p>
+              <ReviewCard review={q} />
             </li>
           ))
         }
@@ -361,37 +345,12 @@ const quotes = [
       column-gap: clamp(1.5rem, 3.5vw, 3rem);
     }
   }
-  /* A thin white line above each quote, the name underneath */
+  /* Each review as a card, laid out like it is on Google */
   .quotes li {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.7);
-  }
-  .quotes blockquote {
-    flex: 1;
-    margin: 0;
-    font-size: clamp(1.05rem, 1.5vw, 1.2rem);
-    line-height: 1.5;
-    color: var(--text);
-    text-wrap: pretty;
-  }
-  .quotes p {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem 0.6rem;
-    margin: 0;
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .quotes strong {
-    font-weight: 700;
-    color: var(--text);
-  }
-  .quotes span {
-    color: var(--muted);
+    padding: clamp(1.1rem, 2.2vw, 1.6rem);
+    background: var(--surface);
   }
 
   /* ---------- Inside the sessions ---------- */

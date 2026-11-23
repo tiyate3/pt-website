@@ -22,7 +22,7 @@ const principles = [
 
 <Layout
   tab="About"
-  description={`Meet Mustafa, the personal trainer behind ${BRAND}. Based in ${BASE_AREA}, central London. My story, training philosophy and what drives me.`}
+  description={`Meet Mustafa, the personal trainer behind ${BRAND}. Based in ${BASE_AREA}, Central London. My story, training philosophy and what drives me.`}
 >
   <!-- Story: personal introduction beside a large portrait -->
   <section class="section on-dark story-section">
@@ -31,7 +31,7 @@ const principles = [
       <div class="story-text">
         <h2 class="story-subheading" data-reveal>About me</h2>
         <div>
-          <p class="first" data-reveal>I'm Mustafa, a personal trainer based in Marylebone, central London. I've been training calisthenics since 2019, I still play football and I run, so I train myself as an all-round athlete, not just to look good in the mirror.</p>
+          <p class="first" data-reveal>I'm Mustafa, a personal trainer based in Marylebone, Central London. I've been training calisthenics since 2019, I still play football and I run, so I train myself as an all-round athlete, not just to look good in the mirror.</p>
           <p class="first" data-reveal>That's exactly how I coach. Most of my clients are busy professionals who want to feel strong, move well and have energy for everything else going on in their lives. I build every plan around you, your schedule and what you actually want to get out of it. That could be your first pull-up, getting back to sport after an injury or just finally feeling fit again.</p>
           <h2 class="story-subheading" data-reveal>Why train with me</h2>
           <p class="first" data-reveal>I practise what I coach. Every skill and method I use, I've worked through myself, so I know what it takes and how to get you there safely.</p>
@@ -57,7 +57,7 @@ const principles = [
   </section>
 
   <!-- Philosophy: one ruled row per principle -->
-  <section class="section on-dark">
+  <section class="section on-dark philosophy-section">
     <div class="container narrow">
       <div class="section-head" data-reveal>
         <h2>My training philosophy</h2>
@@ -232,11 +232,17 @@ const principles = [
     font-size: clamp(1.05rem, 1.4vw, 1.2rem);
     line-height: 1.5;
   }
+  /* Less space under the last principle, and no closing rule after it */
+  .philosophy-section {
+    padding-bottom: calc(var(--section) * 0.5);
+  }
   .principles {
     list-style: none;
     margin: 0;
     padding: 0;
-    border-bottom: 1px solid var(--line);
+  }
+  .principles li:last-child {
+    padding-bottom: 0;
   }
   .principles li {
     padding-block: clamp(1.25rem, 2.5vw, 1.75rem);
@@ -373,9 +379,10 @@ const principles = [
       height: min(125vw, 75vh);
     }
   }
+  /* Instagram, with TikTok below it; one column as wide as the wider button, so both match */
   .socials {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    justify-content: start;
     gap: 0.75rem;
     list-style: none;
     margin: 0;

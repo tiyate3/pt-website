@@ -26,7 +26,7 @@ const { title, text, buttonLabel, tone = 'dark' } = Astro.props;
         <div class="band-action">
           <WhatsAppButton label={buttonLabel} />
         </div>
-        <a class="btn email-cta" href={withBase('/book/')}>Prefer email? Send an enquiry</a>
+        <p class="email-prompt email-cta">Prefer email? <a class="email-link" href={withBase('/book/')}>Send an enquiry</a></p>
       </div>
     ) : (
       <>
@@ -71,48 +71,34 @@ const { title, text, buttonLabel, tone = 'dark' } = Astro.props;
     margin: 0 0 0.4rem;
     text-align: left;
   }
+  /* One centred column: heading, line, the WhatsApp button, then the email line close under it */
   .booking-content {
-    width: 100%;
-    margin-inline: auto;
-    display: grid;
-    /* Text up to its reading width, the buttons straight after it rather than at the far edge */
-    grid-template-columns: minmax(0, 580px) auto;
-    justify-content: start;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.75rem clamp(2rem, 4vw, 3.5rem);
-    text-align: left;
+    text-align: center;
   }
   .booking-content .band-text h2 {
-    text-align: left;
+    text-align: center;
     margin-bottom: 0.75rem;
   }
+  /* Narrower, and balanced so the two lines come out roughly even */
   .booking-content .band-text p {
-    max-width: 580px;
+    max-width: 28rem;
+    margin-inline: auto;
     line-height: 1.7;
-  }
-  /* The text spans both button rows, so the two buttons sit close together beside it */
-  .booking-content .band-text {
-    grid-row: 1 / span 2;
+    text-wrap: balance;
   }
   .booking-content .band-action {
-    grid-column: 2;
-    grid-row: 1;
-    align-self: end;
+    width: min(100%, 15rem);
+    margin-top: 1.75rem;
   }
   .booking-content .band-action :global(.btn) {
     width: 100%;
   }
+  /* Plain text under the WhatsApp button, as on the home page: only "Send an enquiry" is a link */
   .email-cta {
-    --btn-bg: transparent;
-    --btn-fg: var(--text);
-    --btn-border: var(--text);
-    --btn-fill: color-mix(in srgb, var(--text) 8%, transparent);
-    --btn-fill-fg: var(--text);
-    --btn-fill-border: var(--text);
-    grid-column: 2;
-    grid-row: 2;
-    align-self: start;
-    white-space: normal;
+    margin: 0.6rem 0 0;
     text-align: center;
   }
   .band-text p {
@@ -122,15 +108,6 @@ const { title, text, buttonLabel, tone = 'dark' } = Astro.props;
   .band-form {
     padding-top: 1rem;
     border-top: 1px solid var(--line);
-  }
-  /* The WhatsApp button in black and white: inverts to white with a black outline on hover */
-  .band-action :global(.btn) {
-    --btn-bg: var(--black);
-    --btn-fg: #ffffff;
-    --btn-border: var(--black);
-    --btn-fill: #2a2a2a;
-    --btn-fill-fg: #ffffff;
-    --btn-fill-border: #2a2a2a;
   }
   .band-form :global(.email-link) {
     margin-top: 0;
@@ -147,21 +124,7 @@ const { title, text, buttonLabel, tone = 'dark' } = Astro.props;
     }
   }
   @media (max-width: 760px) {
-    .booking-content {
-      grid-template-columns: 1fr;
-      text-align: center;
-    }
-    .booking-content .band-text h2 {
-      text-align: center;
-    }
-    .booking-content .band-text,
-    .booking-content .band-action,
-    .email-cta {
-      grid-column: 1;
-      grid-row: auto;
-    }
-    .booking-content .band-action :global(.btn),
-    .email-cta {
+    .booking-content .band-action {
       width: 100%;
     }
     .band-action :global(.btn) {

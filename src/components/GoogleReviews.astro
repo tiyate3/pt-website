@@ -1,15 +1,11 @@
 ﻿---
-interface Review {
-  quote: string;
-  author: string;
-}
+import ReviewCard from './ReviewCard.astro';
+import { GOOGLE_REVIEWS_URL } from '../config';
+import { HAS_REVIEWS, SHOWN_REVIEWS } from '../reviews';
 
-// Add verified Google reviews here. Until there are any, blank placeholder cards
-// (stars and grey bars, no invented text) hold the layout.
-const reviews: Review[] = [];
-const PLACEHOLDERS = 6;
-
-const slides: (Review | null)[] = reviews.length ? reviews : Array(PLACEHOLDERS).fill(null);
+// The reviews themselves live in src/reviews.ts (shared with the Results page).
+const real = HAS_REVIEWS;
+const slides = SHOWN_REVIEWS;
 ---
 
 <section class="reviews-section" aria-labelledby="reviews-heading">
@@ -17,30 +13,15 @@ const slides: (Review | null)[] = reviews.length ? reviews : Array(PLACEHOLDERS)
     <h2 id="reviews-heading">Testimonials</h2>
 
     <div class="reviews-stage" data-reviews>
-      {!reviews.length && <p class="visually-hidden">Client reviews coming soon.</p>}
+      {!real && <p class="visually-hidden">Client reviews coming soon.</p>}
       <div class="reviews-slides">
         {
           slides.map((review, i) => (
             <figure
-              class:list={['review', { 'is-active': i === 0, 'review--placeholder': !review }]}
-              aria-hidden={review && i === 0 ? undefined : 'true'}
+              class:list={['review', { 'is-active': i === 0, 'review--placeholder': !real }]}
+              aria-hidden={real && i === 0 ? undefined : 'true'}
             >
-              <div class="stars" aria-hidden="true">★★★★★</div>
-              {review ? (
-                <>
-                  <blockquote>{review.quote}</blockquote>
-                  <figcaption>{review.author}</figcaption>
-                </>
-              ) : (
-                <>
-                  <div class="bars">
-                    <span />
-                    <span />
-                    <span />
-                  </div>
-                  <span class="bar-name" />
-                </>
-              )}
+              <ReviewCard review={review} />
             </figure>
           ))
         }
@@ -63,6 +44,13 @@ const slides: (Review | null)[] = reviews.length ? reviews : Array(PLACEHOLDERS)
         )
       }
     </div>
+    {
+      GOOGLE_REVIEWS_URL && real && (
+        <p class="reviews-all">
+          <a class="email-link" href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener">See all reviews on Google</a>
+        </p>
+      )
+    }
   </div>
 </section>
 
@@ -160,47 +148,10 @@ const slides: (Review | null)[] = reviews.length ? reviews : Array(PLACEHOLDERS)
     opacity: 1;
     visibility: visible;
   }
-  .stars {
-    margin-bottom: 0.7rem;
-    color: #fbbc04;
-    font-size: 1.1rem;
-    letter-spacing: 0.15em;
-    line-height: 1;
-  }
-  .review blockquote {
+  .reviews-all {
     margin: 0;
-    font-size: clamp(1.15rem, 1.8vw, 1.45rem);
-    line-height: 1.5;
-  }
-  .review figcaption {
-    margin-top: 1rem;
     color: var(--muted);
-    font-weight: 700;
-  }
-
-  /* Placeholder: grey bars where the review text and name will go */
-  .bars {
-    display: grid;
-    gap: 0.7rem;
-  }
-  .bars span,
-  .bar-name {
-    display: block;
-    height: 0.85rem;
-    background: var(--surface-2);
-  }
-  .bars span:nth-child(1) {
-    width: 100%;
-  }
-  .bars span:nth-child(2) {
-    width: 92%;
-  }
-  .bars span:nth-child(3) {
-    width: 64%;
-  }
-  .bar-name {
-    width: 7rem;
-    margin-top: 1.4rem;
+    font-size: 0.92rem;
   }
 
   /* One thin line per testimonial, under the card. Each is a button; the active one fills

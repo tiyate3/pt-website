@@ -23,7 +23,7 @@ const SERVICE_IMAGES: Record<string, string> = {
 
 <Layout
   tab="Services"
-  description={`Strength & conditioning, sport-specific training, calisthenics, body recomposition, mobility and rehabilitation. One-to-one personal training in ${BASE_AREA} or private in-home training across central London.`}
+  description={`Strength & conditioning, sport-specific training, calisthenics, body recomposition, mobility and rehabilitation. One-to-one personal training in ${BASE_AREA} or private in-home training across Central London.`}
 >
   <!-- Three bands, one photo each: photo on the left, then the pair of services, each with its
        heading, one line and a sentence more -->
@@ -69,8 +69,10 @@ const SERVICE_IMAGES: Record<string, string> = {
   .band--1 {
     padding-top: 0;
   }
+  /* Phones: the first and last bands get the same space above their photo */
   @media (max-width: 760px) {
-    .band--1 {
+    .band--1,
+    .band--3 {
       padding-top: 2rem;
     }
   }
@@ -128,9 +130,12 @@ const SERVICE_IMAGES: Record<string, string> = {
       grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
       min-height: clamp(28rem, 66vh, 40rem);
     }
+    /* The last band gets extra space above and below, so it doesn't read thinner than the first
+       (which has the black nav bar sitting on top of it) */
     .band--3 {
       grid-template-columns: minmax(0, 0.97fr) minmax(0, 1.03fr);
       min-height: clamp(27rem, 63vh, 39rem);
+      padding-block: clamp(2.5rem, 4.5vw, 4rem);
     }
     .band--1,
     .band--3 {

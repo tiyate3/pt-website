@@ -4,7 +4,7 @@ import Icon from '../components/Icon.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 import ImageSlot from '../components/ImageSlot.astro';
 import GoogleReviews from '../components/GoogleReviews.astro';
-import { BRAND, BASE_AREA, GYM_ADDRESS, SERVICES, SOCIALS, STATIONS, TRAINER, WHATSAPP_NUMBER } from '../config';
+import { BRAND, BASE_AREA, GYM_ADDRESS, SERVICES, SOCIALS, STATIONS, TRAINER, WHATSAPP_NUMBER, WHATSAPP_URL } from '../config';
 import { withBase } from '../utils/paths';
 
 const sameAs = Object.values(SOCIALS).filter(Boolean);
@@ -20,7 +20,7 @@ const schema = {
   '@context': 'https://schema.org',
   '@type': 'HealthAndBeautyBusiness',
   name: BRAND,
-  description: `Personal trainer in central London. Gym sessions in ${BASE_AREA} and private in-home personal training across central London.`,
+  description: `Personal trainer in Central London. Gym sessions in ${BASE_AREA} and private in-home personal training across Central London.`,
   telephone: `+${WHATSAPP_NUMBER}`,
   address: {
     '@type': 'PostalAddress',
@@ -42,7 +42,7 @@ const schema = {
 
 <Layout
   tab="Home"
-  description={`Personal trainer in central London, ${BASE_AREA} based, with private in-home personal training across central London. Strength & conditioning, calisthenics, body recomposition, mobility and rehab. Book a session on WhatsApp or by enquiry.`}
+  description={`Personal trainer in Central London, ${BASE_AREA} based, with private in-home personal training across Central London. Strength & conditioning, calisthenics, body recomposition, mobility and rehab. Book a session on WhatsApp or by enquiry.`}
   schema={schema}
 >
   <!-- Hero: one looping clip behind the headline, set along the bottom -->
@@ -52,17 +52,22 @@ const schema = {
     </div>
     <div class="hero-shade" aria-hidden="true"></div>
     <div class="container narrow hero-content">
-      <h1 class="hero-title">
-        <span class="line" data-reveal style="--d: 0">Train like an</span>
-        <span class="line" data-reveal style="--d: 1">athlete</span>
-      </h1>
-      <p class="hero-sub" data-reveal style="--d: 2">Personal trainer in {BASE_AREA}, Central London</p>
+      <!-- Headline and location line, with a soft charcoal smudge behind them -->
+      <div class="hero-heading">
+        <span class="hero-smudge" aria-hidden="true" data-reveal='image' style="--d: 0"></span>
+        <h1 class="hero-title">
+          <span class="line" data-reveal style="--d: 0">Train like an</span>
+          <span class="line" data-reveal style="--d: 1">athlete</span>
+        </h1>
+        <p class="hero-sub" data-reveal style="--d: 2">Personal trainer in {BASE_AREA}, Central London</p>
+      </div>
       <p class="hero-intro" data-reveal style="--d: 3">
-        {introText}{' '}<a href={withBase('/about/')}>More about me</a>
+        {introText}
+        <a class="more-link" href={withBase('/about/')}>More about me</a>
       </p>
 
       <div class="hero-foot" data-reveal style="--d: 4">
-        <WhatsAppButton class="hero-cta" />
+        <WhatsAppButton class="hero-cta" label="Message me" icon />
       </div>
     </div>
   </section>
@@ -90,7 +95,8 @@ const schema = {
   <!-- Phones only: the intro sits here on white, just above "Where I train clients", to keep the hero uncluttered -->
   <section class="intro-phone" aria-label="About Mustafa">
     <div class="container">
-      <p class="intro-phone-text">{introText}{' '}<a href={withBase('/about/')}>More about me</a></p>
+      <p class="intro-phone-text">{introText}
+        <a class="more-link" href={withBase('/about/')}>More about me</a></p>
     </div>
   </section>
 
@@ -114,7 +120,7 @@ const schema = {
           </div>
           <div class="place-text" data-reveal>
             <h3>{BASE_AREA} based</h3>
-            <p>One-to-one sessions in a fully kitted-out gym in central London. Rigs, bars, rings and free weights, everything we need.</p>
+            <p>One-to-one sessions in a fully kitted-out gym in Central London. Rigs, bars, rings and free weights, everything we need.</p>
           </div>
         </article>
         <article class="place">
@@ -126,7 +132,7 @@ const schema = {
               ratio="3 / 2"
               delay={1}
             />
-            <p class="place-bar">Across central London</p>
+            <p class="place-bar">Across Central London</p>
           </div>
           <div class="place-text" data-reveal style="--d: 1">
             <h3>Private in-home personal training</h3>
@@ -154,7 +160,7 @@ const schema = {
     <div class="book">
       <div class="book-intro">
         <h2>Book a session</h2>
-        <p>Tell me what you want to work on and when you're free.</p>
+        <p>Tell me what you want to work on<br class="book-break" /> and when you're free.</p>
       </div>
       <!-- Buttons, then the email link under them -->
       <div class="book-actions">
@@ -196,6 +202,9 @@ const schema = {
           <div class="location-follow">
             <ul>
               <li>
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener" data-umami-event="WhatsApp click"><span class="social-icon"><Icon name="whatsapp" /></span>WhatsApp</a>
+              </li>
+              <li>
                 {SOCIALS.instagram ? (
                   <a href={SOCIALS.instagram} target="_blank" rel="noopener"><span class="social-icon"><Icon name="instagram" /></span>Instagram</a>
                 ) : (
@@ -211,7 +220,6 @@ const schema = {
               </li>
             </ul>
           </div>
-          <WhatsAppButton class="location-action" variant="ghost" label="Message me" icon={false} />
         </section>
       </div>
       <div class="map-frame">
@@ -279,8 +287,9 @@ const schema = {
     text-align: left;
   }
   /* Location line under the headline: plain sentence case, quieter than the headline */
+  /* Headline, this line and the button share one 1.25rem rhythm, so they read as one block */
   .hero-sub {
-    margin: clamp(0.9rem, 1.6vw, 1.1rem) 0 0;
+    margin: 1.25rem 0 0;
     font-size: clamp(0.98rem, 1.3vw, 1.1rem);
     font-weight: 500;
     line-height: 1.4;
@@ -295,6 +304,36 @@ const schema = {
   }
   .hero-title .line {
     display: block;
+  }
+  /* Soft, uneven charcoal smudge behind the headline and location line: a few overlapping soft
+     patches, blurred together so it reads as a splash of shadow rather than a neat oval.
+     Still, and fades in with the headline. */
+  .hero-heading {
+    position: relative;
+    isolation: isolate;
+  }
+  .hero-smudge {
+    position: absolute;
+    inset: -45% -30% -50% -18%;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(38% 46% at 30% 42%, rgba(24, 24, 24, 0.72), transparent 70%),
+      radial-gradient(30% 38% at 62% 34%, rgba(34, 34, 34, 0.55), transparent 72%),
+      radial-gradient(34% 30% at 44% 72%, rgba(28, 28, 28, 0.6), transparent 70%),
+      radial-gradient(18% 22% at 80% 58%, rgba(40, 40, 40, 0.4), transparent 75%),
+      radial-gradient(14% 18% at 12% 70%, rgba(40, 40, 40, 0.35), transparent 75%);
+    filter: blur(28px);
+  }
+  .hero-heading .hero-title,
+  .hero-heading .hero-sub {
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+  }
+  @media (max-width: 600px) {
+    .hero-smudge {
+      inset: -35% -12% -40% -10%;
+      filter: blur(20px);
+    }
   }
   /* Hi, I'm Mustafa: two lines under the headline, with a quiet link to About */
   .hero-intro {
@@ -320,7 +359,7 @@ const schema = {
     }
     .hero-intro {
       grid-column: 2;
-      grid-row: 1 / span 3;
+      grid-row: 1 / span 2;
       align-self: end;
       margin: 0;
       padding-left: 1.25rem;
@@ -328,26 +367,29 @@ const schema = {
       font-size: 0.98rem;
     }
   }
-  .hero-intro a {
-    margin-left: 0.2em;
-    color: #ffffff;
-    font-weight: 400;
+  /* About me: its own line under the bio, underlined, in regular italic at the paragraph's size */
+  .more-link {
+    display: block;
+    width: fit-content;
+    margin-top: 0.9rem;
+    color: var(--text);
+    font-size: 1em;
     font-style: italic;
-    white-space: nowrap;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
     text-decoration: underline;
     text-decoration-thickness: 1px;
-    text-underline-offset: 0.25em;
+    text-underline-offset: 0.35em;
+    text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+    transition: text-decoration-color 0.2s ease;
   }
-  /* Hover: same as the "Send an enquiry" email links, the underline thickens to 2px */
-  .hero-intro a,
-  .intro-phone-text a {
-    transition: color 0.2s, border-color 0.2s;
+  .more-link:hover,
+  .more-link:focus-visible {
+    text-decoration-color: currentColor;
   }
-  .hero-intro a:hover,
-  .hero-intro a:focus-visible,
-  .intro-phone-text a:hover,
-  .intro-phone-text a:focus-visible {
-    text-decoration-thickness: 2px;
+  .hero-intro .more-link {
+    color: #ffffff;
   }
   /* Phones: the intro leaves the hero and shows on white, just above "Where I train clients" */
   .intro-phone {
@@ -368,39 +410,16 @@ const schema = {
       line-height: 1.6;
       color: var(--muted);
     }
-    .intro-phone-text a {
-      margin-left: 0.2em;
-      color: var(--text);
-      font-style: italic;
-      white-space: nowrap;
-      text-decoration: underline;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 0.25em;
-    }
+
   }
   .hero-foot {
     display: grid;
     justify-items: start;
     gap: 1.75rem;
-    margin-top: clamp(1rem, 2vw, 1.5rem);
+    margin-top: 1.25rem;
   }
   .hero-foot .lead {
     margin: 0;
-  }
-  /* WhatsApp button: a thin white outline over the video, filling faintly on hover */
-  .hero-foot :global(.hero-cta) {
-    --btn-bg: transparent;
-    --btn-fg: #ffffff;
-    --btn-border: rgba(255, 255, 255, 0.55);
-    --btn-fill: rgba(255, 255, 255, 0.1);
-    --btn-fill-fg: #ffffff;
-    --btn-fill-border: #ffffff;
-  }
-  /* Phones: full width */
-  @media (max-width: 520px) {
-    .hero-foot {
-      justify-items: stretch;
-    }
   }
 
   /* Home page only: a third less space above and below each section */
@@ -640,6 +659,13 @@ const schema = {
     margin: 0;
     font-size: 1.08rem;
   }
+  /* Break before "and when you're free", so the second line is those four words. On small
+     phones the first part wouldn't fit on one line, so the text wraps naturally instead. */
+  @media (max-width: 359px) {
+    .book-break {
+      display: none;
+    }
+  }
   /* The link sits under the buttons, its underline only as wide as its text */
   .book-actions {
     display: flex;
@@ -657,6 +683,8 @@ const schema = {
   /* White, between the black booking band and the black footer */
   .location-sections {
     background: var(--bg);
+    /* Tighter than the other home sections */
+    padding-block: calc(var(--section) * 0.45);
   }
   /* Info stacked on the left, the map filling the right and matching the column's height */
   .location-grid {
@@ -685,11 +713,10 @@ const schema = {
     align-items: flex-start;
   }
   .find-block {
-    padding-bottom: clamp(1.75rem, 3vw, 2.25rem);
-    border-bottom: 1px solid var(--line);
+    padding-bottom: 0;
   }
   .contact-block {
-    padding-top: clamp(1.75rem, 3vw, 2.25rem);
+    padding-top: 1.75rem;
   }
   .location-block > h2 {
     margin: 0 0 1rem;
@@ -730,13 +757,20 @@ const schema = {
     font-size: 0.8rem;
     color: var(--muted);
   }
-  /* Get directions / Message me: the small pill, like "Book a session" in the header */
+  /* Get directions: the full width of the station list above it, in the same soft grey fill and
+     spaced capitals as the WhatsApp buttons */
   .location-copy :global(.location-action) {
+    --btn-bg: color-mix(in srgb, var(--text) 8%, transparent);
+    --btn-border: transparent;
+    --btn-fill: color-mix(in srgb, var(--text) 16%, transparent);
+    --btn-fill-border: transparent;
     width: fit-content;
     min-height: 2.5rem;
     margin-top: 1.25rem;
     padding: 0.5rem 1.25rem;
     font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
   .location-follow ul {
     display: grid;
@@ -778,7 +812,7 @@ const schema = {
   .map-frame {
     position: relative;
     overflow: hidden;
-    min-height: 26rem;
+    min-height: 19rem;
     border-radius: 12px;
     background: var(--surface-2);
     box-shadow: 0 0 0 1px var(--line);
@@ -797,7 +831,7 @@ const schema = {
   }
   @media (max-width: 859px) {
     .map-frame {
-      min-height: 18rem;
+      min-height: 14rem;
     }
   }
 </style>

@@ -15,6 +15,12 @@ export const STATIONS: { name: string; walk: string }[] = [
   { name: 'Oxford Circus', walk: '8 min walk' },
 ];
 
+/**
+ * Link to Mustafa's reviews on his Google Business Profile (in Google Maps: his profile, then
+ * Share). When set, "See all reviews on Google" shows under the reviews on the home page.
+ */
+export const GOOGLE_REVIEWS_URL = '';
+
 /** Where enquiry form messages are delivered. */
 export const CONTACT_EMAIL = 'mustafatheathlete@gmail.com';
 /**

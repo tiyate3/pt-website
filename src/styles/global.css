@@ -1,7 +1,8 @@
 @import '@fontsource/lato/400.css';
+/* Real italic, so italic text isn't a faked slant of the upright letters */
+@import '@fontsource/lato/400-italic.css';
 @import '@fontsource/lato/700.css';
 @import '@fontsource/lato/900.css';
-@import '@fontsource-variable/inter';
 
 :root {
   /* Light by default: white page, near-black text, orange only as a highlight */
@@ -18,7 +19,8 @@
   --black: #0b0b0b;
 
   --font-display: 'Lato', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* One font for the whole site: Lato, as in the home headline */
+  --font-body: var(--font-display);
   /* Small uppercase labels */
   --font-nav: var(--font-body);
 
@@ -239,6 +241,7 @@ p {
 }
 .email-link {
   display: inline;
+  font-style: italic;
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.25em;
@@ -327,15 +330,25 @@ p {
   --btn-fill-border: color-mix(in srgb, var(--text) 85%, var(--bg));
 }
 
-/* WhatsApp: solid in the text colour, so white on black sections and black on white ones.
-   No orange: orange stays for small details only. */
-.btn--primary.btn--whatsapp {
-  --btn-bg: var(--text);
-  --btn-fg: var(--bg);
-  --btn-border: var(--text);
-  --btn-fill: color-mix(in srgb, var(--text) 85%, var(--bg));
-  --btn-fill-fg: var(--bg);
-  --btn-fill-border: color-mix(in srgb, var(--text) 85%, var(--bg));
+/* WhatsApp, everywhere: the WhatsApp icon and spaced capitals on a soft see-through fill in the
+   text colour, no outline. White-tinted on black sections (as in the home hero), grey on white. */
+.btn.btn--whatsapp {
+  --btn-bg: color-mix(in srgb, var(--text) 16%, transparent);
+  --btn-fg: var(--text);
+  --btn-border: transparent;
+  --btn-fill: color-mix(in srgb, var(--text) 26%, transparent);
+  --btn-fill-fg: var(--text);
+  --btn-fill-border: transparent;
+  min-height: 2.875rem;
+  padding: 0.7rem 1.5rem;
+  gap: 0.55rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.btn.btn--whatsapp svg {
+  width: 1.4em;
+  height: 1.4em;
 }
 
 /* Ghost: an outline in the text colour with a faint tint on hover (the defaults above) */
