@@ -56,18 +56,28 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       <span class="bars" aria-hidden="true"></span>
     </button>
   </div>
+  <!-- Phone menu: darkens the page beside the open menu; tapping it closes the menu -->
+  <div class="menu-scrim" aria-hidden="true"></div>
 </header>
 
 <script>
   const header = document.querySelector<HTMLElement>('.header');
   const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
   const nav = document.getElementById('site-nav');
-  toggle?.addEventListener('click', () => {
-    const open = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!open));
-    nav?.classList.toggle('open', !open);
-    header?.classList.toggle('menu-open', !open);
-    document.body.style.overflow = open ? '' : 'hidden';
+  const setMenu = (open: boolean) => {
+    toggle?.setAttribute('aria-expanded', String(open));
+    nav?.classList.toggle('open', open);
+    header?.classList.toggle('menu-open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+  toggle?.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
+  // Tapping the darkened page or pressing Escape closes the menu
+  document.querySelector('.menu-scrim')?.addEventListener('click', () => setMenu(false));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+      setMenu(false);
+      toggle.focus();
+    }
   });
 
   // See-through over the top of the home hero; solid black everywhere else.
@@ -151,8 +161,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     --muted: rgba(255, 255, 255, 0.7);
     --line: rgba(255, 255, 255, 0.2);
   }
-  .header.dark-solid,
-  .header.menu-open {
+  .header.dark-solid {
     border-bottom-color: var(--line);
   }
   /* Slid up out of view (a few px more than its height, so the bottom rule goes too) */
@@ -177,7 +186,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     }
   }
   /* Over the hero video: a soft dark fade behind the bar that dissolves to nothing */
-  .header:not(.dark-solid, .menu-open)::after {
+  .header:not(.dark-solid)::after {
     content: '';
     position: absolute;
     inset: 0 0 -70% 0;
@@ -195,8 +204,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     opacity: 0;
     transition: opacity 0.25s;
   }
-  .header.dark-solid::before,
-  .header.menu-open::before {
+  .header.dark-solid::before {
     opacity: 1;
   }
 
@@ -309,7 +317,8 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
   }
 
   .menu-toggle,
-  .menu-foot {
+  .menu-foot,
+  .menu-scrim {
     display: none;
   }
 
@@ -329,6 +338,9 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       height: 22px;
     }
     .menu-toggle {
+      /* Stays above the open menu, so it becomes the close button in the menu's corner */
+      position: relative;
+      z-index: 3;
       display: grid;
       place-items: center;
       width: 2.75rem;
@@ -369,28 +381,48 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       transform: translateY(-3.25px) rotate(-45deg);
     }
 
-    /* Full-screen menu: big sentence-case links at the top, a small contact card and the
-       button at the bottom. No dividers, no numbers, nothing orange */
-    .nav {
+    /* The page beside the open menu, darkened */
+    .menu-scrim {
+      display: block;
       position: fixed;
-      top: var(--bar-h);
-      left: 0;
-      right: 0;
-      height: calc(100dvh - var(--bar-h));
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0;
-      padding: 2rem var(--pad) calc(1.5rem + env(safe-area-inset-bottom));
-      background: var(--bg);
-      overflow-y: auto;
+      inset: 0;
+      z-index: 1;
+      background: rgba(0, 0, 0, 0.6);
       opacity: 0;
       visibility: hidden;
       transition:
         opacity 0.4s var(--ease),
         visibility 0.4s;
     }
-    .nav.open {
+    .header.menu-open .menu-scrim {
       opacity: 1;
+      visibility: visible;
+    }
+
+    /* Side menu that slides in from the right, full height: big sentence-case links at the
+       top, a small contact card and the button at the bottom. No dividers, no numbers */
+    .nav {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 2;
+      width: min(82vw, 22rem);
+      height: 100dvh;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: calc(var(--bar-h) + 1.5rem) var(--pad) calc(1.5rem + env(safe-area-inset-bottom));
+      border-left: 1px solid var(--line);
+      background: var(--bg);
+      overflow-y: auto;
+      transform: translateX(100%);
+      visibility: hidden;
+      transition:
+        transform 0.45s var(--ease),
+        visibility 0.45s;
+    }
+    .nav.open {
+      transform: none;
       visibility: visible;
     }
     .nav ul {
@@ -478,6 +510,10 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     }
   }
   @media (max-width: 960px) and (prefers-reduced-motion: reduce) {
+    .nav,
+    .menu-scrim {
+      transition: none;
+    }
     .nav li,
     .nav.open li {
       opacity: 1;
