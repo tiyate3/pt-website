@@ -26,12 +26,13 @@ const {
 } = Astro.props;
 // Browser tab: "Mustafa The Athlete | About"
 const tabTitle = `Mustafa The Athlete | ${tab}`;
-// Link previews (Messages, WhatsApp, etc.): "Mustafa | Personal Training in Central London | About"
-const shareTitle = `Mustafa | Personal Training in Central London | ${tab}`;
+// Link previews (Messages, WhatsApp, etc.): "Mustafa | Personal training in Central London | About"
+const shareTitle = `Mustafa | Personal training in Central London | ${tab}`;
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
-// Share image as a full live URL (social sites ignore relative paths), including the deploy base
+// Share image as a full live URL (social sites ignore relative paths), including the deploy base.
+// Bump ?v= whenever the image changes, so apps that cached the old one fetch it again
 const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
-const ogImage = new URL(`${base}/${image.replace(/^\/+/, '')}`, Astro.site).href;
+const ogImage = `${new URL(`${base}/${image.replace(/^\/+/, '')}`, Astro.site).href}?v=2`;
 ---
 
 <!doctype html>

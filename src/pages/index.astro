@@ -166,9 +166,9 @@ const schema = {
       <div class="book-actions">
         <div class="actions">
           <WhatsAppButton label="Message me" />
-          <a class="btn btn--ghost" href={withBase('/services/')}>View my services</a>
         </div>
         <p class="email-prompt">Prefer email? <a class="email-link" href={withBase('/book/')}>Send an enquiry</a></p>
+        <p class="email-prompt services-prompt">Not sure what you need? <a class="email-link" href={withBase('/services/')}>See my services</a></p>
       </div>
     </div>
     </div>
@@ -690,6 +690,13 @@ const schema = {
   }
   .book-actions .email-prompt {
     margin-top: 1.75rem;
+  }
+  /* Second quiet line, close under the email one */
+  .book-actions .email-prompt {
+    line-height: 1.45;
+  }
+  .book-actions .services-prompt {
+    margin-top: 0.2rem;
   }
   /* ---------- Find me and get in touch ---------- */
   /* White, between the black booking band and the black footer */
