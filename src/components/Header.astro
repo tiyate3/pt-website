@@ -405,7 +405,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       flex-direction: column;
       align-items: stretch;
       gap: 0;
-      padding: 2.25rem var(--pad) calc(1.5rem + env(safe-area-inset-bottom));
+      padding: 2rem var(--pad) calc(2rem + env(safe-area-inset-bottom));
       border-left: 1px solid var(--line);
       background: var(--bg);
       overflow-y: auto;
@@ -423,6 +423,8 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       flex-direction: column;
       align-items: stretch;
       gap: 0;
+      /* Centred top to bottom in the panel (auto margins, so short screens still scroll) */
+      margin-block: auto;
     }
     .nav ul a {
       display: flex;
