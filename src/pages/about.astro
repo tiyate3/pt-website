@@ -267,6 +267,7 @@ const principles = [
   .split-media {
     position: relative;
     overflow: hidden;
+    background: var(--black);
   }
   .split-media :global(.slot) {
     height: 100%;
@@ -406,6 +407,15 @@ const principles = [
   }
   .clip :global(.slot) {
     height: 100%;
+    background: var(--black);
+  }
+  /* iPhone Safari can leave a hairline of the page showing down each side of a video.
+     The montage is drawn 1px past every edge (the box clips it), so it runs wall to wall. */
+  .clip :global(video) {
+    position: absolute;
+    inset: -1px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
   }
   @media (prefers-reduced-motion: reduce) {
     .clip {

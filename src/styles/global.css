@@ -264,7 +264,7 @@ p {
 
 /* ---------- Buttons & links ---------- */
 
-/* One button for the whole site: softly rounded corners, a 1px outline and spaced capitals.
+/* One button for the whole site: small 4px corners, a 1px outline and sentence-case text.
    On hover the colour shifts a shade over 0.2s; pressing it sinks it in very slightly.
    Each kind of button only sets its colours, through these:
      --btn-bg / --btn-fg / --btn-border               at rest
@@ -285,17 +285,16 @@ p {
   min-height: 2.875rem;
   padding: 0.7rem 1.4rem;
   border: 1px solid var(--btn-border);
-  border-radius: 0.6rem;
+  border-radius: 4px;
   background: var(--btn-bg);
   color: var(--btn-fg);
-  /* Inter, whose 600 weight keeps the capitals clean (Lato only comes in 700) */
   font-family: var(--font-body);
   font-style: normal;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   line-height: 1.2;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
@@ -330,14 +329,15 @@ p {
   --btn-fill-border: #e84a0f;
 }
 
-/* WhatsApp: an orange outline, filling with orange */
+/* WhatsApp: solid in the text colour, so white on black sections and black on white ones.
+   No orange: orange stays for small details only. */
 .btn--primary.btn--whatsapp {
-  --btn-bg: transparent;
-  --btn-fg: var(--text);
-  --btn-border: var(--accent);
-  --btn-fill: var(--accent);
-  --btn-fill-fg: #ffffff;
-  --btn-fill-border: var(--accent);
+  --btn-bg: var(--text);
+  --btn-fg: var(--bg);
+  --btn-border: var(--text);
+  --btn-fill: color-mix(in srgb, var(--text) 85%, var(--bg));
+  --btn-fill-fg: var(--bg);
+  --btn-fill-border: color-mix(in srgb, var(--text) 85%, var(--bg));
 }
 
 /* Ghost: an outline in the text colour with a faint tint on hover (the defaults above) */

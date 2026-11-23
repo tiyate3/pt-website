@@ -66,7 +66,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     const y = header.offsetHeight + 1;
     const under = document
       .elementsFromPoint(window.innerWidth / 2, y)
-      .find((el) => !header.contains(el) && !el.closest('.fab'));
+      .find((el) => !header.contains(el));
     const overHero = !scrolled && !!under?.closest('.hero');
     header.classList.toggle('dark-solid', !overHero);
   };

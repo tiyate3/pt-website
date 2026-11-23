@@ -52,21 +52,20 @@ const schema = {
     </div>
     <div class="hero-shade" aria-hidden="true"></div>
     <div class="container narrow hero-content">
-      <p class="hero-eyebrow" data-reveal style="--d: 0">
-        Personal training in central London
-      </p>
       <h1 class="hero-title">
-        <span class="line" data-reveal style="--d: 1">Train like an</span>
-        <span class="line accent" data-reveal style="--d: 2"><em>athlete.</em></span>
+        <span class="line" data-reveal style="--d: 0">Train like an</span>
+        <span class="line accent" data-reveal style="--d: 1"><em>athlete.</em></span>
       </h1>
+      <p class="hero-sub" data-reveal style="--d: 2">Personal trainer in {BASE_AREA}, central London</p>
       <p class="hero-intro" data-reveal style="--d: 3">
         {introText}
       </p>
 
       <div class="hero-foot" data-reveal style="--d: 4">
-        <div class="actions">
-          <WhatsAppButton />
-          <a class="btn btn--ghost hero-services" href={withBase('/services/')}>Training services</a>
+        <!-- One combined button: WhatsApp on the left, services on the right, joined by a divider -->
+        <div class="combo">
+          <WhatsAppButton class="combo-main" />
+          <a class="btn combo-side" href={withBase('/services/')}>Services</a>
         </div>
       </div>
     </div>
@@ -301,33 +300,13 @@ const schema = {
     z-index: 2;
     text-align: left;
   }
-  .hero :global(.btn--primary.btn--whatsapp) {
-    --btn-bg: var(--accent);
-    --btn-fg: #fff;
-    --btn-border: var(--accent);
-    --btn-fill: #d46a3b;
-    --btn-fill-border: #d46a3b;
-    --btn-fill-fg: #fff;
-  }
-  .hero-eyebrow {
-    color: #fff;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin: 0 0 16px;
-    position: relative;
-    left: -0.75rem;
-    top: 3px;
-  }
-  /* iPhone: smaller, and lined up with the heading instead of pulled out toward the edge */
-  @media (max-width: 520px) {
-    .hero-eyebrow {
-      left: 0;
-      margin-bottom: 12px;
-      font-size: 10.5px;
-      letter-spacing: 0.16em;
-    }
+  /* Location line under the headline: plain sentence case, quieter than the headline */
+  .hero-sub {
+    margin: clamp(0.9rem, 1.6vw, 1.1rem) 0 0;
+    font-size: clamp(0.98rem, 1.3vw, 1.1rem);
+    font-weight: 500;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.8);
   }
   .hero-title {
     font-size: clamp(2.1rem, 5vw, 3.8rem);
@@ -419,26 +398,55 @@ const schema = {
   }
   .hero-foot {
     display: grid;
-    justify-items: center;
+    justify-items: start;
     gap: 1.75rem;
     margin-top: clamp(1rem, 2vw, 1.5rem);
   }
   .hero-foot .lead {
     margin: 0;
   }
-  /* Phones: the WhatsApp button full width, and Services as a quiet underlined link under it */
+  /* Combined button: WhatsApp (solid white) and Services (outlined) as one joined bar */
+  .combo {
+    display: inline-flex;
+    align-items: stretch;
+  }
+  .combo :global(.combo-main) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .combo-side {
+    border-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    --btn-border: rgba(255, 255, 255, 0.55);
+  }
+  .combo-side:hover,
+  .combo-side:focus-visible {
+    --btn-fill-border: #ffffff;
+  }
+  /* Phones: the bar runs the full width, WhatsApp taking the space it needs */
   @media (max-width: 520px) {
     .hero-foot {
       justify-items: stretch;
     }
-    .hero-foot .actions {
-      flex-direction: column;
-      align-items: center;
-      gap: 0.9rem;
-    }
-    .hero-foot .actions :global(.btn--whatsapp),
-    .hero-foot .actions .hero-services {
+    .combo {
+      display: flex;
       width: 100%;
+    }
+    .combo :global(.combo-main) {
+      flex: 1 1 auto;
+      padding-inline: 1rem;
+    }
+    .combo-side {
+      flex: none;
+      padding-inline: 1rem;
+    }
+  }
+  /* Smallest iPhones (SE): a touch smaller so the bar still fits on one line */
+  @media (max-width: 360px) {
+    .combo :global(.btn) {
+      padding-inline: 0.75rem;
+      font-size: 0.85rem;
     }
   }
 
@@ -452,19 +460,20 @@ const schema = {
   .where-section {
     padding-top: clamp(2rem, 4vw, 3rem);
   }
-  /* Section opener, centred like a magazine section title: a larger heading, the line in a
+  /* Section opener, left-aligned like the rest of the page: a larger heading, the line in a
      narrow measure beneath it, and a full-width rule closing it off above the images */
   .where-head {
     display: grid;
-    justify-items: center;
+    justify-items: start;
     gap: 0.85rem;
     margin-bottom: clamp(2rem, 4vw, 3rem);
     padding-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
     border-bottom: 1px solid var(--line);
-    text-align: center;
+    text-align: left;
   }
   .where-head h2 {
     margin: 0;
+    text-align: left;
     font-size: clamp(1.8rem, 3vw, 2.5rem);
     line-height: 1.05;
     letter-spacing: -0.01em;
@@ -500,10 +509,9 @@ const schema = {
     background: rgba(11, 11, 11, 0.72);
     color: #ffffff;
     font-family: var(--font-nav);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0;
     line-height: 1.3;
   }
   /* Short left-aligned caption under each image, lined up with its left edge */
@@ -696,22 +704,6 @@ const schema = {
   }
   .book-actions .email-prompt {
     margin-top: 1.75rem;
-  }
-  .book-section :global(.actions .btn) {
-    --btn-bg: var(--accent);
-    --btn-fg: #ffffff;
-    --btn-border: var(--accent);
-    --btn-fill: #d46a3b;
-    --btn-fill-border: #d46a3b;
-    --btn-fill-fg: #ffffff;
-  }
-  .book-section :global(.actions .btn:nth-child(2)) {
-    --btn-bg: #ffffff;
-    --btn-fg: var(--black);
-    --btn-border: #ffffff;
-    --btn-fill: #e8e8e8;
-    --btn-fill-border: #e8e8e8;
-    --btn-fill-fg: var(--black);
   }
   /* ---------- Find me and get in touch ---------- */
   /* White, between the black booking band and the black footer */
