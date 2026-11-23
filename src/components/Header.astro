@@ -40,10 +40,14 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       </a>
     </nav>
 
-    <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav">
-      <span class="visually-hidden">Menu</span>
-      <span class="bars" aria-hidden="true"></span>
-    </button>
+    <!-- Phones only: BOOK beside the menu button (on desktop, Book a session is in the nav) -->
+    <div class="bar-end">
+      <a class="bar-book" href={withBase('/book/')} aria-current={isActive('/book/') ? 'page' : undefined}>Book</a>
+      <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav">
+        <span class="visually-hidden">Menu</span>
+        <span class="bars" aria-hidden="true"></span>
+      </button>
+    </div>
   </div>
   <!-- Phone menu: darkens the page beside the open menu; tapping it closes the menu -->
   <div class="menu-scrim" aria-hidden="true"></div>
@@ -307,7 +311,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     color: var(--black);
   }
 
-  .menu-toggle,
+  .bar-end,
   .menu-scrim {
     display: none;
   }
@@ -419,9 +423,6 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       flex-direction: column;
       align-items: stretch;
       gap: 0;
-      /* A line between the page links and the Book a session button */
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--line);
     }
     .nav ul a {
       display: flex;
@@ -451,24 +452,37 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       display: none;
     }
 
-    /* Book a session: a small button centred under the links, in the same soft see-through
-       style as the MESSAGE ME button */
+    /* Book a session lives in the top bar on phones (BOOK), so it's left out of the menu */
     .nav-cta {
-      align-self: center;
-      margin-top: 2.25rem;
-      min-height: 2.5rem;
-      padding: 0.55rem 1.4rem;
-      border: 0;
+      display: none;
+    }
+    .bar-end {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    /* BOOK: a small soft see-through button, like MESSAGE ME */
+    .bar-book {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.125rem;
+      padding: 0.35rem 0.9rem;
       border-radius: 4px;
       background: rgba(255, 255, 255, 0.16);
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
-    }
-    .nav-cta:hover,
-    .nav-cta:focus-visible,
-    .nav-cta[aria-current='page'] {
-      background: rgba(255, 255, 255, 0.26);
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      line-height: 1.2;
+      text-transform: uppercase;
+      text-decoration: none;
       color: #ffffff;
+      transition: background-color 0.2s ease;
+    }
+    .bar-book:hover,
+    .bar-book:focus-visible,
+    .bar-book[aria-current='page'] {
+      background: rgba(255, 255, 255, 0.26);
     }
   }
   @media (max-width: 960px) and (prefers-reduced-motion: reduce) {
