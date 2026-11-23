@@ -19,8 +19,6 @@ const SERVICE_IMAGES: Record<string, string> = {
   'strength-and-conditioning': '/images/services2.png',
   'mobility-and-flexibility': '/images/services3.png',
 };
-const COUNT_WORDS = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
-const count = COUNT_WORDS[SERVICES.length] ?? String(SERVICES.length);
 ---
 
 <Layout
@@ -56,7 +54,7 @@ const count = COUNT_WORDS[SERVICES.length] ?? String(SERVICES.length);
 
   <CtaBand
     title="Book a session"
-    text={`One-to-one coaching in ${BASE_AREA} or at home across central London. ${count} ways to train; most clients combine two or three. Pricing depends on your plan and how often you train.`}
+    text={`One-to-one in ${BASE_AREA} or at your home. Pricing depends on how often you train.`}
     tone="grey"
   />
 </Layout>

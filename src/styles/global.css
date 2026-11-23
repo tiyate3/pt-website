@@ -317,14 +317,14 @@ p {
   outline-offset: 3px;
 }
 
-/* Solid orange */
+/* Solid in the text colour: black on white pages, white on black sections */
 .btn--primary {
-  --btn-bg: var(--accent);
-  --btn-fg: #ffffff;
-  --btn-border: var(--accent);
-  --btn-fill: #e84a0f;
-  --btn-fill-fg: #ffffff;
-  --btn-fill-border: #e84a0f;
+  --btn-bg: var(--text);
+  --btn-fg: var(--bg);
+  --btn-border: var(--text);
+  --btn-fill: color-mix(in srgb, var(--text) 85%, var(--bg));
+  --btn-fill-fg: var(--bg);
+  --btn-fill-border: color-mix(in srgb, var(--text) 85%, var(--bg));
 }
 
 /* WhatsApp: solid in the text colour, so white on black sections and black on white ones.
