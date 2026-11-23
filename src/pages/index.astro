@@ -421,8 +421,11 @@ const schema = {
   .hero-foot .lead {
     margin: 0;
   }
-  /* Phones: a smaller MESSAGE ME button, only as wide as its words (not the full screen) */
+  /* Phones: a smaller MESSAGE ME button, only as wide as its words, centred */
   @media (max-width: 600px) {
+    .hero-foot {
+      justify-items: center;
+    }
     .hero-foot :global(.btn--whatsapp) {
       width: auto;
       min-height: 2.5rem;
