@@ -10,14 +10,14 @@ interface Props {
   title: string;
   text: string;
   buttonLabel?: string;
-  tone?: 'dark' | 'light';
+  tone?: 'dark' | 'light' | 'grey';
 }
 const { title, text, buttonLabel, tone = 'dark' } = Astro.props;
 ---
 
-<section class:list={['cta', tone === 'dark' ? 'on-dark' : 'light']} aria-label="Get started">
+<section class:list={['cta', tone === 'dark' ? 'on-dark' : tone === 'grey' ? 'grey' : 'light']} aria-label="Get started">
   <div class="container band">
-    <div class="band-text">
+    <div class:list={['band-text', { 'band-text--boxed': tone === 'grey' }]}>
       <h2>{title}</h2>
       <p>{text}</p>
     </div>
@@ -38,6 +38,10 @@ const { title, text, buttonLabel, tone = 'dark' } = Astro.props;
     background: var(--surface);
     color: var(--text);
   }
+  .grey {
+    background: #d8d8d8;
+    color: var(--text);
+  }
   .band {
     /* Same editorial measure as the Services rows */
     max-width: calc(960px + 2 * var(--pad));
@@ -48,6 +52,10 @@ const { title, text, buttonLabel, tone = 'dark' } = Astro.props;
   .band-text h2 {
     margin: 0 0 0.4rem;
     text-align: left;
+  }
+  .band-text--boxed {
+    background: #fff;
+    padding: clamp(1.25rem, 3vw, 2rem);
   }
   .band-text p {
     margin: 0;
