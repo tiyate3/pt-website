@@ -423,8 +423,8 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       flex-direction: column;
       align-items: stretch;
       gap: 0;
-      /* Centred top to bottom in the panel (auto margins, so short screens still scroll) */
-      margin-block: auto;
+      /* In the upper part of the panel: clear of the top bar, but not down in the middle */
+      margin-top: 6vh;
     }
     .nav ul a {
       display: flex;
