@@ -16,17 +16,32 @@ const { title, text, buttonLabel, tone = 'dark' } = Astro.props;
 ---
 
 <section class:list={['cta', tone === 'dark' ? 'on-dark' : tone === 'grey' ? 'grey' : 'light']} aria-label="Get started">
-  <div class="container band">
-    <div class:list={['band-text', { 'band-text--boxed': tone === 'grey' }]}>
-      <h2>{title}</h2>
-      <p>{text}</p>
-    </div>
-    <div class="band-action">
-      <WhatsAppButton label={buttonLabel} />
-    </div>
-    <div class="band-form">
-      <p class="email-prompt">Prefer email? <a class="email-link" href={withBase('/book/')}>Send an enquiry</a></p>
-    </div>
+  <div class:list={['container', 'band', { 'band--centered': tone === 'grey' }]}>
+    {tone === 'grey' ? (
+      <div class="booking-content">
+        <div class="band-text">
+          <h2>{title}</h2>
+          <p>{text}</p>
+        </div>
+        <div class="band-action">
+          <WhatsAppButton label={buttonLabel} />
+        </div>
+        <a class="btn email-cta" href={withBase('/book/')}>Prefer email? Send an enquiry</a>
+      </div>
+    ) : (
+      <>
+        <div class="band-text">
+          <h2>{title}</h2>
+          <p>{text}</p>
+        </div>
+        <div class="band-action">
+          <WhatsAppButton label={buttonLabel} />
+        </div>
+      <div class="band-form">
+        <p class="email-prompt">Prefer email? <a class="email-link" href={withBase('/book/')}>Send an enquiry</a></p>
+      </div>
+      </>
+    )}
   </div>
 </section>
 
@@ -39,7 +54,7 @@ const { title, text, buttonLabel, tone = 'dark' } = Astro.props;
     color: var(--text);
   }
   .grey {
-    background: #d8d8d8;
+    background: #fff;
     color: var(--text);
   }
   .band {
@@ -49,13 +64,48 @@ const { title, text, buttonLabel, tone = 'dark' } = Astro.props;
     gap: 1.25rem 2rem;
     align-items: center;
   }
+  .band--centered {
+    display: block;
+  }
   .band-text h2 {
     margin: 0 0 0.4rem;
     text-align: left;
   }
-  .band-text--boxed {
-    background: #fff;
-    padding: clamp(1.25rem, 3vw, 2rem);
+  .booking-content {
+    width: 100%;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.35rem 1.5rem;
+    text-align: left;
+  }
+  .booking-content .band-text h2 {
+    text-align: left;
+    margin-bottom: 0.75rem;
+  }
+  .booking-content .band-text p {
+    max-width: 580px;
+    line-height: 1.7;
+  }
+  .booking-content .band-text {
+    grid-row: 1;
+  }
+  .booking-content .band-action {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .email-cta {
+    --btn-bg: transparent;
+    --btn-fg: var(--text);
+    --btn-border: var(--text);
+    --btn-fill: color-mix(in srgb, var(--text) 8%, transparent);
+    --btn-fill-fg: var(--text);
+    --btn-fill-border: var(--text);
+    grid-column: 2;
+    grid-row: 2;
+    white-space: normal;
+    text-align: center;
   }
   .band-text p {
     margin: 0;
@@ -88,7 +138,23 @@ const { title, text, buttonLabel, tone = 'dark' } = Astro.props;
       grid-column: 1 / -1;
     }
   }
-  @media (max-width: 520px) {
+  @media (max-width: 760px) {
+    .booking-content {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .booking-content .band-text h2 {
+      text-align: center;
+    }
+    .booking-content .band-text,
+    .booking-content .band-action,
+    .email-cta {
+      grid-column: 1;
+    }
+    .booking-content .band-action :global(.btn),
+    .email-cta {
+      width: 100%;
+    }
     .band-action :global(.btn) {
       width: 100%;
     }
