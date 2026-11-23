@@ -275,16 +275,16 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     background: #c2410c;
   }
 
-  /* Book a session: the small version of the site button. A thin white outline with a faint
-     white tint on hover; filled white on the booking page */
+  /* Book a session: a soft see-through button with no outline, the same as BOOK on phones;
+     a little stronger on hover and on the booking page */
   .nav-cta {
     display: inline-flex;
     align-items: center;
-    min-height: 2.5rem;
-    padding: 0.5rem 1.25rem;
-    border: 1px solid #ffffff;
-    border-radius: 0.6rem;
-    background: transparent;
+    min-height: 2.375rem;
+    padding: 0.45rem 1.1rem;
+    border: 0;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.16);
     font-family: var(--font-display);
     font-size: 0.88rem;
     font-weight: 700;
@@ -301,14 +301,13 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
   }
   .nav-cta:hover,
   .nav-cta:focus-visible {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.26);
   }
   .nav-cta:active {
     scale: 0.98;
   }
   .nav-cta[aria-current='page'] {
-    background: #ffffff;
-    color: var(--black);
+    background: rgba(255, 255, 255, 0.26);
   }
 
   .bar-end,
