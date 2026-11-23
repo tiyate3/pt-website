@@ -58,15 +58,11 @@ const schema = {
       </h1>
       <p class="hero-sub" data-reveal style="--d: 2">Personal trainer in {BASE_AREA}, Central London</p>
       <p class="hero-intro" data-reveal style="--d: 3">
-        {introText}
+        {introText}{' '}<a href={withBase('/about/')}>More about me</a>
       </p>
 
       <div class="hero-foot" data-reveal style="--d: 4">
-        <!-- One combined button: WhatsApp on the left, services on the right, joined by a divider -->
-        <div class="combo">
-          <WhatsAppButton class="combo-main" />
-          <a class="btn combo-side" href={withBase('/services/')}>Services</a>
-        </div>
+        <WhatsAppButton class="hero-cta" />
       </div>
     </div>
   </section>
@@ -164,7 +160,7 @@ const schema = {
       <div class="book-actions">
         <div class="actions">
           <WhatsAppButton label="Message me" />
-          <a class="btn btn--ghost" href={withBase('/services/')}>See what I offer</a>
+          <a class="btn btn--ghost" href={withBase('/services/')}>View my services</a>
         </div>
         <p class="email-prompt">Prefer email? <a class="email-link" href={withBase('/book/')}>Send an enquiry</a></p>
       </div>
@@ -342,9 +338,16 @@ const schema = {
     text-decoration-thickness: 1px;
     text-underline-offset: 0.25em;
   }
+  /* Hover: same as the "Send an enquiry" email links, the underline thickens to 2px */
+  .hero-intro a,
+  .intro-phone-text a {
+    transition: color 0.2s, border-color 0.2s;
+  }
   .hero-intro a:hover,
-  .hero-intro a:focus-visible {
-    text-decoration-color: var(--accent);
+  .hero-intro a:focus-visible,
+  .intro-phone-text a:hover,
+  .intro-phone-text a:focus-visible {
+    text-decoration-thickness: 2px;
   }
   /* Phones: the intro leaves the hero and shows on white, just above "Where I train clients" */
   .intro-phone {
@@ -384,53 +387,19 @@ const schema = {
   .hero-foot .lead {
     margin: 0;
   }
-  /* Combined button: WhatsApp (solid white) and Services (outlined) as one joined bar */
-  .combo {
-    display: inline-flex;
-    align-items: stretch;
-  }
-  .combo :global(.combo-main) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-  .combo-side {
-    border-left: 0;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+  /* WhatsApp button: a thin white outline over the video, filling faintly on hover */
+  .hero-foot :global(.hero-cta) {
+    --btn-bg: transparent;
+    --btn-fg: #ffffff;
     --btn-border: rgba(255, 255, 255, 0.55);
-  }
-  .combo-side:hover,
-  .combo-side:focus-visible {
+    --btn-fill: rgba(255, 255, 255, 0.1);
+    --btn-fill-fg: #ffffff;
     --btn-fill-border: #ffffff;
   }
-  /* Phones: the bar runs the full width, WhatsApp taking the space it needs */
+  /* Phones: full width */
   @media (max-width: 520px) {
     .hero-foot {
       justify-items: stretch;
-    }
-    .combo {
-      display: flex;
-      width: 100%;
-    }
-    /* global.css makes every .btn full width on phones; inside the bar the two halves share
-       one row instead, or Services is pushed off the right edge of the screen */
-    .combo :global(.combo-main) {
-      flex: 1 1 auto;
-      width: auto;
-      min-width: 0;
-      padding-inline: 1rem;
-    }
-    .combo .combo-side {
-      flex: none;
-      width: auto;
-      padding-inline: 1rem;
-    }
-  }
-  /* Smallest iPhones (SE): a touch smaller so the bar still fits on one line */
-  @media (max-width: 360px) {
-    .combo :global(.btn) {
-      padding-inline: 0.75rem;
-      font-size: 0.85rem;
     }
   }
 
@@ -462,13 +431,12 @@ const schema = {
     line-height: 1.05;
     letter-spacing: -0.01em;
   }
+  /* One line on tablets and desktop; it only wraps where the screen is too narrow */
   .where-head p {
     margin: 0;
-    max-width: 26rem;
     font-size: 1.05rem;
     line-height: 1.55;
     color: var(--muted);
-    text-wrap: balance;
   }
   .where {
     display: grid;
@@ -658,7 +626,7 @@ const schema = {
   .book {
     display: grid;
     align-content: start;
-    gap: clamp(1.75rem, 3.5vw, 2.5rem);
+    gap: 1.25rem;
   }
   .book-intro {
     text-align: left;
