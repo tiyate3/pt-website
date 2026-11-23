@@ -7,19 +7,12 @@ import { SHOWN_REVIEWS } from '../reviews';
 import { withBase } from '../utils/paths';
 
 /*
- * Inside the sessions: one upright (9:16) video per service, in the Training page order.
+ * Inside the sessions: the session videos, shown in this order and numbered (Video 1, Video 2...).
  * Put files in /public/media and set `src` (the video) and `poster` (a still from it), e.g.
- * { service: 'Calisthenics', src: '/media/cali-session.mp4', poster: '/media/cali-session.jpg' }.
+ * { src: '/media/session-1.mp4', poster: '/media/session-1.jpg' }. Add or remove entries freely.
  * Only post clients who have agreed to appear on the website.
  */
-const sessionVideos: { service: string; src?: string; poster?: string }[] = [
-  { service: 'Calisthenics' },
-  { service: 'Body recomposition' },
-  { service: 'Strength & conditioning' },
-  { service: 'Sport-specific training' },
-  { service: 'Mobility & flexibility' },
-  { service: 'Rehabilitation' },
-];
+const sessionVideos: { src?: string; poster?: string }[] = [{}, {}, {}, {}, {}, {}];
 
 /*
  * EXAMPLE CONTENT: replace with real client testimonials.
@@ -131,7 +124,7 @@ const quotes = SHOWN_REVIEWS.slice(0, 3);
       {
         /* The set is drawn twice so the drift can loop without a jump; the copy is hidden from screen readers */
         [0, 1].map((copy) =>
-          sessionVideos.map((v) => (
+          sessionVideos.map((v, i) => (
             <li class="strip-item" aria-hidden={copy === 1 ? 'true' : undefined}>
               <div class="strip-media">
                 {v.src ? (
@@ -142,10 +135,10 @@ const quotes = SHOWN_REVIEWS.slice(0, 3);
                     loop
                     playsinline
                     preload="none"
-                    aria-label={`${v.service} session`}
+                    aria-label={`Training session, video ${i + 1}`}
                   />
                 ) : (
-                  <ImageSlot label={`${v.service} session video`} type="video" ratio="4 / 3" reveal={false} />
+                  <ImageSlot label={`Video ${i + 1}`} type="video" ratio="4 / 3" reveal={false} />
                 )}
               </div>
             </li>
