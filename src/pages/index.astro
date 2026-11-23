@@ -421,6 +421,14 @@ const schema = {
   .hero-foot .lead {
     margin: 0;
   }
+  /* Phones: a smaller MESSAGE ME button */
+  @media (max-width: 600px) {
+    .hero-foot :global(.btn--whatsapp) {
+      min-height: 2.5rem;
+      padding: 0.55rem 1.15rem;
+      font-size: 0.8rem;
+    }
+  }
 
   /* Home page only: a third less space above and below each section */
   .section {

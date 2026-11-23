@@ -1,5 +1,5 @@
 ---
-import { BASE_AREA, BRAND, NAV, SOCIALS, WHATSAPP_URL } from '../config';
+import { BRAND, NAV } from '../config';
 import logoWhite from '../assets/mustafatheathlete-nav-logo.svg';
 import { withBase } from '../utils/paths';
 
@@ -35,17 +35,6 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
           ))
         }
       </ul>
-      <!-- Phone menu only: a small contact card above the button -->
-      <div class="menu-foot">
-        <p class="menu-links">
-          <a href={WHATSAPP_URL} target="_blank" rel="noopener" data-umami-event="WhatsApp click">WhatsApp</a>
-          <span aria-hidden="true">·</span>
-          <a href={SOCIALS.instagram} target="_blank" rel="noopener">Instagram</a>
-          <span aria-hidden="true">·</span>
-          <a href={SOCIALS.tiktok} target="_blank" rel="noopener">TikTok</a>
-        </p>
-        <p class="menu-area">{BASE_AREA}, Central London</p>
-      </div>
       <a class="nav-cta" href={withBase('/book/')} aria-current={isActive('/book/') ? 'page' : undefined}>
         Book a session
       </a>
@@ -161,7 +150,8 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     --muted: rgba(255, 255, 255, 0.7);
     --line: rgba(255, 255, 255, 0.2);
   }
-  .header.dark-solid {
+  .header.dark-solid,
+  .header.menu-open {
     border-bottom-color: var(--line);
   }
   /* Slid up out of view (a few px more than its height, so the bottom rule goes too) */
@@ -186,7 +176,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     }
   }
   /* Over the hero video: a soft dark fade behind the bar that dissolves to nothing */
-  .header:not(.dark-solid)::after {
+  .header:not(.dark-solid, .menu-open)::after {
     content: '';
     position: absolute;
     inset: 0 0 -70% 0;
@@ -204,7 +194,8 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     opacity: 0;
     transition: opacity 0.25s;
   }
-  .header.dark-solid::before {
+  .header.dark-solid::before,
+  .header.menu-open::before {
     opacity: 1;
   }
 
@@ -317,7 +308,6 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
   }
 
   .menu-toggle,
-  .menu-foot,
   .menu-scrim {
     display: none;
   }
@@ -381,11 +371,11 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       transform: translateY(-3.25px) rotate(-45deg);
     }
 
-    /* The page beside the open menu, darkened */
+    /* The page beside the open menu, darkened. The top bar stays visible above it */
     .menu-scrim {
       display: block;
       position: fixed;
-      inset: 0;
+      inset: var(--bar-h) 0 0;
       z-index: 1;
       background: rgba(0, 0, 0, 0.6);
       opacity: 0;
@@ -399,19 +389,19 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       visibility: visible;
     }
 
-    /* Side menu that slides in from the right, full height: big sentence-case links at the
-       top, a small contact card and the button at the bottom. No dividers, no numbers */
+    /* Side menu that slides in from the right, under the top bar: small capitals, each with a
+       chevron at the right end, then the Book a session button centred beneath */
     .nav {
       position: fixed;
-      top: 0;
+      top: var(--bar-h);
       right: 0;
       z-index: 2;
       width: min(82vw, 22rem);
-      height: 100dvh;
+      height: calc(100dvh - var(--bar-h));
       flex-direction: column;
       align-items: stretch;
       gap: 0;
-      padding: calc(var(--bar-h) + 1.5rem) var(--pad) calc(1.5rem + env(safe-area-inset-bottom));
+      padding: 1.25rem var(--pad) calc(1.5rem + env(safe-area-inset-bottom));
       border-left: 1px solid var(--line);
       background: var(--bg);
       overflow-y: auto;
@@ -427,7 +417,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     }
     .nav ul {
       flex-direction: column;
-      align-items: flex-start;
+      align-items: stretch;
       gap: 0;
     }
     /* Each link rises into place a moment after the one above */
@@ -444,12 +434,23 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       transition-delay: calc(0.08s + var(--i) * 0.04s);
     }
     .nav ul a {
-      padding-block: 0.3rem;
-      font-size: clamp(2rem, 9vw, 2.5rem);
-      letter-spacing: -0.01em;
-      line-height: 1.15;
-      text-transform: none;
-      color: rgba(255, 255, 255, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-block: 0.95rem;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    /* A thin chevron (not an arrow) at the right end of each link */
+    .nav ul a::before {
+      content: '';
+      order: 2;
+      width: 0.4rem;
+      height: 0.4rem;
+      margin-right: 0.2rem;
+      border-top: 1.5px solid currentColor;
+      border-right: 1.5px solid currentColor;
+      transform: rotate(45deg);
     }
     .nav ul a:hover,
     .nav ul a:focus-visible,
@@ -460,46 +461,17 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       display: none;
     }
 
-    /* Contact card: small grey text, pushed to the bottom above the button */
-    .menu-foot {
-      display: block;
-      margin-top: auto;
-      padding-top: 2.5rem;
-      font-size: 0.9rem;
-      line-height: 1.6;
-      color: var(--muted);
-    }
-    .menu-foot p {
-      margin: 0;
-    }
-    .menu-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .menu-links a {
-      color: #ffffff;
-      text-decoration: none;
-    }
-    .menu-links a:hover,
-    .menu-links a:focus-visible {
-      text-decoration: underline;
-      text-underline-offset: 0.2em;
-    }
-    .menu-area {
-      margin-top: 0.25rem !important;
-    }
-
-    /* Book a session: full width, the same soft see-through style as the MESSAGE ME button */
+    /* Book a session: a small button centred under the links, in the same soft see-through
+       style as the MESSAGE ME button */
     .nav-cta {
-      justify-content: center;
-      margin-top: 1.25rem;
-      min-height: 2.875rem;
-      padding: 0.7rem 1.5rem;
+      align-self: center;
+      margin-top: 2rem;
+      min-height: 2.5rem;
+      padding: 0.55rem 1.4rem;
       border: 0;
       border-radius: 4px;
       background: rgba(255, 255, 255, 0.16);
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       letter-spacing: 0.08em;
     }
     .nav-cta:hover,
