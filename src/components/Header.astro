@@ -419,6 +419,9 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       flex-direction: column;
       align-items: stretch;
       gap: 0;
+      /* A line between the page links and the Book a session button */
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--line);
     }
     /* Each link rises into place a moment after the one above */
     .nav li {
@@ -465,7 +468,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
        style as the MESSAGE ME button */
     .nav-cta {
       align-self: center;
-      margin-top: 2rem;
+      margin-top: 2.25rem;
       min-height: 2.5rem;
       padding: 0.55rem 1.4rem;
       border: 0;
